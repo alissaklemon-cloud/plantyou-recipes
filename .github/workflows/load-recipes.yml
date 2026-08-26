@@ -1,0 +1,39 @@
+name: Load PlantYou recipes
+
+on:
+  workflow_dispatch:
+    inputs:
+      max_recipes:
+        description: Number of recipes to load
+        required: false
+        default: '30'
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run PlantYou scraper
+        run: python plantyou_scraper_v2.py --pages 3 --categories 8 --max-recipes ${{ inputs.max_recipes }} --delay 1
+
+      - name: Commit recipe database
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add plantyou.db
+          git diff --cached --quiet || git commit -m "Load PlantYou recipe data"
+          git push
