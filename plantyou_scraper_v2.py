@@ -277,15 +277,22 @@ def main():
     args=ap.parse_args()
     cfg=json.load(open(args.config))
     s=requests.Session(); s.headers["User-Agent"]=cfg.get("user_agent","PlantYouRecipeResearch/1.0")
-    urls=discover(s,args.pages,args.categories,args.delay)[:args.max_recipes]
+    urls=discover(s,args.pages,args.categories,args.delay)
     conn=sqlite3.connect(args.db); conn.executescript(SCHEMA)
-    print(f"Discovered {len(urls)} unique recipe URLs.")
+    print(f"Discovered {len(urls)} unique candidate URLs.")
+    saved=0
     for i,u in enumerate(urls,1):
+        if saved >= args.max_recipes:
+            break
         try:
             r=get(s,u,args.delay); r.raise_for_status()
-            rec=parse_recipe(u,r.text); a=analyze(rec,cfg); save(conn,rec,a)
-            print(f"{i:03}/{len(urls)} {rec['name']} | prep {a['practical_prep_min']}-{a['practical_prep_max']}m | mess {a['mess']}/5")
-        except Exception as e:
+            rec=parse_recipe(u,r.text)
+            if not rec.get("raw_json"):
+              print(f"{i:03}/{len(urls)} SKIP non-recipe page {u}")
+              continue
+            a=analyze(rec,cfg); save(conn,rec,a)
+            saved += 1
+            print(f"{saved:03}/{args.max_recipes} {rec['name']} | prep {a['practical_prep_min']}-{a['practical_prep_max']}m | mess {a['mess']}/5")        except Exception as e:
             print(f"{i:03}/{len(urls)} ERROR {u}: {e}")
     conn.close()
 
