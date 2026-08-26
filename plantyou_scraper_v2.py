@@ -244,7 +244,7 @@ def save(conn,r,a):
     parser_warnings=excluded.parser_warnings,scraped_at=excluded.scraped_at""",
     (r["name"],r["url"],r["description"],r["author"],r["servings"],r["prep_minutes"],r["cook_minutes"],r["total_minutes"],
      r["image_url"],r["date_published"],r["date_modified"],r["rating"],r["rating_count"],json.dumps(r["keywords"]),
-     json.dumps(r["categories"]),r["cuisine"],json.dumps(r["raw_json"]),json.dumps(r["warnings"]),
+     json.dumps(r["categories"]),json.dumps(r["cuisine"]),json.dumps(r["raw_json"]),
      datetime.now(timezone.utc).isoformat()))
     rid=c.execute("SELECT recipe_id FROM recipes WHERE url=?",(r["url"],)).fetchone()[0]
     c.execute("DELETE FROM ingredients WHERE recipe_id=?",(rid,))
