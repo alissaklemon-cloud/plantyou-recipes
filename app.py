@@ -73,9 +73,43 @@ Cleanup: {{r.cleanup_min}}–{{r.cleanup_max}} min<br><br>
 <h2>Instructions</h2><ol>{% for x in instructions %}<li>{{x.step}}</li>{% endfor %}</ol>
 """
 
-def conn():
-    c=sqlite3.connect(DB); c.row_factory=sqlite3.Row; return c
+SCHEMA = """
+CREATE TABLE IF NOT EXISTS recipes(
+ recipe_id INTEGER PRIMARY KEY,
+ name TEXT NOT NULL, url TEXT UNIQUE NOT NULL, description TEXT, author TEXT,
+ servings INTEGER, prep_minutes INTEGER, cook_minutes INTEGER, total_minutes INTEGER,
+ image_url TEXT, date_published TEXT, date_modified TEXT, rating REAL, rating_count INTEGER,
+ keywords TEXT, categories TEXT, cuisine TEXT, raw_json TEXT, parser_warnings TEXT,
+ scraped_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS ingredients(
+ ingredient_id INTEGER PRIMARY KEY,
+ recipe_id INTEGER NOT NULL, position INTEGER NOT NULL,
+ original_text TEXT NOT NULL, quantity REAL, unit TEXT, ingredient TEXT, preparation TEXT,
+ convenience_replacement TEXT
+);
+CREATE TABLE IF NOT EXISTS instructions(
+ instruction_id INTEGER PRIMARY KEY,
+ recipe_id INTEGER NOT NULL, position INTEGER NOT NULL, step TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS analysis(
+ recipe_id INTEGER PRIMARY KEY,
+ practical_prep_min INTEGER, practical_prep_max INTEGER,
+ hands_on_min INTEGER, hands_on_max INTEGER,
+ passive_min INTEGER, passive_max INTEGER,
+ cleanup_min INTEGER, cleanup_max INTEGER,
+ prep_effort REAL, mess REAL, cleanup_burden REAL,
+ weeknight_friendliness REAL, dirty_dish_estimate INTEGER,
+ convenience_assumptions TEXT, reasons TEXT, confidence REAL, warnings TEXT
+);
+"""
 
+def conn():
+    c = sqlite3.connect(DB)
+    c.row_factory = sqlite3.Row
+    c.executescript(SCHEMA)
+    return c
+    
 @app.route("/")
 def index():
     q=request.args.get("q","").strip()
