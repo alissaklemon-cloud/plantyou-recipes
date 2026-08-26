@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: plantyou-recipes
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    envVars:
+      - key: PLANTYOU_DB
+        value: plantyou.db

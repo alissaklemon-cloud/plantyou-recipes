@@ -1,0 +1,72 @@
+{
+  "convenience_rules": [
+    {
+      "match": "mince garlic",
+      "replacement": "jarred minced garlic",
+      "minutes_saved": 2
+    },
+    {
+      "match": "chop garlic",
+      "replacement": "jarred minced garlic",
+      "minutes_saved": 2
+    },
+    {
+      "match": "dice onion",
+      "replacement": "pre-diced onion",
+      "minutes_saved": 2
+    },
+    {
+      "match": "chop onion",
+      "replacement": "pre-diced onion",
+      "minutes_saved": 2
+    },
+    {
+      "match": "shred carrots",
+      "replacement": "pre-shredded carrots",
+      "minutes_saved": 2
+    },
+    {
+      "match": "grate carrots",
+      "replacement": "pre-shredded carrots",
+      "minutes_saved": 2
+    },
+    {
+      "match": "shred cabbage",
+      "replacement": "pre-shredded cabbage",
+      "minutes_saved": 3
+    },
+    {
+      "match": "cut broccoli into florets",
+      "replacement": "bagged broccoli florets",
+      "minutes_saved": 2
+    },
+    {
+      "match": "cut cauliflower into florets",
+      "replacement": "pre-cut cauliflower florets",
+      "minutes_saved": 2
+    },
+    {
+      "match": "cube butternut squash",
+      "replacement": "pre-cut butternut squash",
+      "minutes_saved": 5
+    },
+    {
+      "match": "grate cheese",
+      "replacement": "pre-shredded cheese",
+      "minutes_saved": 2
+    },
+    {
+      "match": "grated cheese",
+      "replacement": "pre-shredded cheese",
+      "minutes_saved": 2
+    },
+    {
+      "match": "grate ginger",
+      "replacement": "ginger paste",
+      "minutes_saved": 2
+    }
+  ],
+  "convenience_level": "high",
+  "max_request_delay_seconds": 2.0,
+  "user_agent": "PlantYouRecipeResearch/1.0"
+}
