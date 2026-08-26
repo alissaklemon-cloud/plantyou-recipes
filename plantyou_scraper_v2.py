@@ -292,7 +292,8 @@ def main():
               continue
             a=analyze(rec,cfg); save(conn,rec,a)
             saved += 1
-            print(f"{saved:03}/{args.max_recipes} {rec['name']} | prep {a['practical_prep_min']}-{a['practical_prep_max']}m | mess {a['mess']}/5")        except Exception as e:
+            print(f"{saved:03}/{args.max_recipes} {rec['name']} | prep {a['practical_prep_min']}-{a['practical_prep_max']}m | mess {a['mess']}/5")        
+          except Exception as e:
             print(f"{i:03}/{len(urls)} ERROR {u}: {e}")
     conn.close()
 
